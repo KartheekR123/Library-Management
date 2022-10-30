@@ -1,36 +1,64 @@
 import tkinter
 from tkinter import *
+from tkinter import messagebox
+#1(TITLE,ICON,WINDOW)
 root=Tk()
-root.title('    Library Management System   ')
+root.title('Library Management System')
 root.iconbitmap("C:\\Users\\PRASAD\\Downloads\\library.ico")
-root.geometry('800x500')
+root.geometry('500x200')
 
 
-
+#2(ADDING TEXT IN WINDOW)
 txt1=Label(root,text='Enter Author Name :',font=50)
 txt2=Label(root,text='Enter Book Name :',font=50)
 txt1.grid(row=0,column=0)
 txt2.grid(row=1,column=0)
 
-enter1=Entry(root,fg='red',width=25,)
-enter1.grid(row=0,column=1)
-enter2=Entry(root,fg='red',width=25,)
+#3(ADDING INPUT BOX)
+enter1=Entry(root,fg='red',width=20)#AUTHOR NAME
+enter1.grid(row=0,column=1)#BOOK NAME
+enter2=Entry(root,fg='red',width=20)
 enter2.grid(row=1,column=1)
 
+#4(ADDING BUTTONS)
+update_button=Button(root,text='UPDATE',height=2,width=10)
+check_button=Button(root,text='CHECK',height=2,width=10)
+borrow_button=Button(root,text='BORROW',height=2,width=10)
+return_button=Button(root,text='RETURN',height=2,width=10)
 
-def c1():
+#5(PLACEMENT OF BUTTONS)
+update_button.grid(row=2,column=0)
+check_button.grid(row=2,column=1)
+borrow_button.grid(row=3,column=0)
+return_button.grid(row=3,column=1)
+
+#6(ADDING COMMANDS)
+def update():
     name=enter1.get()
-    fun=enter2.get()
+    book=enter2.get()
     import mysql.connector
     mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
     cur=mydb.cursor()
     query='INSERT INTO books(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
-    b1=(name,fun)
+    b1=(name,book)
     cur.execute(query,b1)
-    mydb.commit() 
-    
-btn1=Button(root,text='Submit',command=c1)
-btn1.grid(row=2,column=1)
+    mydb.commit()
 
-root.mainloop()
- 
+update_button=Button(root,text='UPDATE',height=2,width=10,command=update)
+update_button.grid(row=2,column=0)
+
+def check():
+    name=enter1.get()
+    book=enter2.get()
+    import mysql.connector
+    mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
+    cur=mydb.cursor()
+    sql="select * from books where  BOOKNAME='%s"
+    cur.execute(sql)
+    result=cur.fetchone()
+    if result==book:
+        messagebox.showinfo('book available')
+    else:
+       messagebox.showinfo('no such book available')
+check_button=Button(root,text='CHECK',height=2,width=10,command=check)
+check_button.grid(row=2,column=1)
