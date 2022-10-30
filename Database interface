@@ -1,0 +1,36 @@
+import tkinter
+from tkinter import *
+root=Tk()
+root.title('    Library Management System   ')
+root.iconbitmap("C:\\Users\\PRASAD\\Downloads\\library.ico")
+root.geometry('800x500')
+
+
+
+txt1=Label(root,text='Enter Author Name :',font=50)
+txt2=Label(root,text='Enter Book Name :',font=50)
+txt1.grid(row=0,column=0)
+txt2.grid(row=1,column=0)
+
+enter1=Entry(root,fg='red',width=25,)
+enter1.grid(row=0,column=1)
+enter2=Entry(root,fg='red',width=25,)
+enter2.grid(row=1,column=1)
+
+
+def c1():
+    name=enter1.get()
+    fun=enter2.get()
+    import mysql.connector
+    mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
+    cur=mydb.cursor()
+    query='INSERT INTO books(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
+    b1=(name,fun)
+    cur.execute(query,b1)
+    mydb.commit() 
+    
+btn1=Button(root,text='Submit',command=c1)
+btn1.grid(row=2,column=1)
+
+root.mainloop()
+ 
