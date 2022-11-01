@@ -33,37 +33,44 @@ borrow_button.grid(row=3,column=0)
 return_button.grid(row=3,column=1)
 
 #7(MESSAGE BOX)
-def click():
+def update_message():
    messagebox.showinfo("Update", "Sucessfully Added")
-
-
+def borrow_message():
+   messagebox.showinfo("Update", "Sucessfully Borrowed")
+def return_message():
+   messagebox.showinfo("Update", "Sucessfully Returned")
+   
+   
 #6(ADDING COMMANDS)
 def update():
     name=enter1.get()
     book=enter2.get()
+    name=name.lower()
+    book=book.lower()
     import mysql.connector
-    mydb=mysql.connector.connect(host='localhost',user='root',password='Enter password',database='Enter name')
+    mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
     cur=mydb.cursor()
-    query='INSERT INTO books(Enter withour quotes(coloumn name which will contain books),Enter without quotes(coloumn name which will contain authors) VALUES(%s, %s)'
+    query='INSERT INTO books(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
     b1=(name,book)
     cur.execute(query,b1)
     mydb.commit()
+    updat_message()
 
 update_button=Button(root,text='UPDATE',height=2,width=10,command=update)
 update_button.grid(row=2,column=0)
 
 
-
-
 def check():
    name=enter1.get()
    book=enter2.get()
+   name=name.lower()
+   book=book.lower()
    import mysql.connector
-   mydb=mysql.connector.connect(host='localhost',user='root',password='Enter password',database='Enter name')
+   mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
    cur=mydb.cursor()
-   sql="select * from books where  BOOKNAME=(%s)"
+   query="select * from books where  BOOKNAME=(%s)"
    b2=(name,)
-   cur.execute(sql,b2)
+   cur.execute(query,b2)
    result=cur.fetchone()
    if result[0]==name and result[1]==book:
       show=messagebox.showinfo("showinfo", "Book Available")
@@ -74,8 +81,46 @@ def check():
 check_button=Button(root,text='CHECK',height=2,width=10,command=check)
 check_button.grid(row=2,column=1)
 
+def borrow():
+   name=enter1.get()
+   book=enter2.get()
+   name=name.lower()
+   book=book.lower()
+   import mysql.connector
+   mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
+   cur=mydb.cursor()
+   query2='INSERT INTO borrowed(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
+   b2=(name,book)
+   cur.execute(query2,b2)
+   mydb.commit()
+   query3='DELETE FROM books WHERE BOOKNAME=(%s)'
+   b3=(name,)
+   cur.execute(query3,b3)
+   mydb.commit()
+   borrow_message()
+borrow_button=Button(root,text='BORROW',height=2,width=10,command=borrow)
+borrow_button.grid(row=3,column=0)
 
 
+def Return():
+   name=enter1.get()
+   book=enter2.get()
+   name=name.lower()
+   book=book.lower()
+   import mysql.connector
+   mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
+   cur=mydb.cursor()
+   query2='INSERT INTO books(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
+   b2=(name,book)
+   cur.execute(query2,b2)
+   mydb.commit()
+   query3='DELETE FROM borrowed WHERE BOOKNAME=(%s)'
+   b3=(name,)
+   cur.execute(query3,b3)
+   mydb.commit()
+   return_message()
+return_button=Button(root,text='RETURN',height=2,width=10,command=Return)
+return_button.grid(row=3,column=1)
 
 
 root.mainloop()
