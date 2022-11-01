@@ -32,6 +32,11 @@ check_button.grid(row=2,column=1)
 borrow_button.grid(row=3,column=0)
 return_button.grid(row=3,column=1)
 
+#7(MESSAGE BOX)
+def click():
+   messagebox.showinfo("Update", "Sucessfully Added")
+
+
 #6(ADDING COMMANDS)
 def update():
     name=enter1.get()
@@ -47,18 +52,36 @@ def update():
 update_button=Button(root,text='UPDATE',height=2,width=10,command=update)
 update_button.grid(row=2,column=0)
 
+
+
+
 def check():
-    name=enter1.get()
-    book=enter2.get()
-    import mysql.connector
-    mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
-    cur=mydb.cursor()
-    sql="select * from books where  BOOKNAME='%s"
-    cur.execute(sql)
-    result=cur.fetchone()
-    if result==book:
-        messagebox.showinfo('book available')
-    else:
-       messagebox.showinfo('no such book available')
+   name=enter1.get()
+   book=enter2.get()
+   import mysql.connector
+   mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
+   cur=mydb.cursor()
+   sql="select * from books where  BOOKNAME=(%s)"
+   b2=(name,)
+   cur.execute(sql,b2)
+   result=cur.fetchone()
+   if result[0]==name and result[1]==book:
+      show=messagebox.showinfo("showinfo", "Book Available")
+   else:
+      show_other=messagebox.showinfo("showinfo", "Book not found") 
+   print('Author name :',result[0])#just verifying(can be removed if you want to)
+   print(' Book name   :',result[1])#same goes for this
 check_button=Button(root,text='CHECK',height=2,width=10,command=check)
 check_button.grid(row=2,column=1)
+
+
+
+
+
+root.mainloop()
+
+
+
+
+    
+
