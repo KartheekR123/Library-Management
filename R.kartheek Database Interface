@@ -42,9 +42,9 @@ def update():
     name=enter1.get()
     book=enter2.get()
     import mysql.connector
-    mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
+    mydb=mysql.connector.connect(host='localhost',user='root',password='Enter password',database='Enter name')
     cur=mydb.cursor()
-    query='INSERT INTO books(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
+    query='INSERT INTO books(Enter withour quotes(coloumn name which will contain books),Enter without quotes(coloumn name which will contain authors) VALUES(%s, %s)'
     b1=(name,book)
     cur.execute(query,b1)
     mydb.commit()
@@ -59,7 +59,7 @@ def check():
    name=enter1.get()
    book=enter2.get()
    import mysql.connector
-   mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
+   mydb=mysql.connector.connect(host='localhost',user='root',password='Enter password',database='Enter name')
    cur=mydb.cursor()
    sql="select * from books where  BOOKNAME=(%s)"
    b2=(name,)
