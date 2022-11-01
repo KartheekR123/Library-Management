@@ -54,7 +54,7 @@ def update():
     b1=(name,book)
     cur.execute(query,b1)
     mydb.commit()
-    updat_message()
+    update_message()
 
 update_button=Button(root,text='UPDATE',height=2,width=10,command=update)
 update_button.grid(row=2,column=0)
