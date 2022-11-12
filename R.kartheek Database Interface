@@ -1,132 +1,169 @@
 import tkinter
 from tkinter import *
 from tkinter import messagebox
-#1(TITLE,ICON,WINDOW)
-root=Tk()
-root.title('Library Management System')
-root.iconbitmap("C:\\Users\\PRASAD\\Downloads\\library.ico")
-root.geometry('500x200')
+
+root = Tk()
+root.title("Library Management")
+width = 400
+height = 280
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+x = (screen_width/2) - (width/2)
+y = (screen_height/2) - (height/2)
+root.geometry("%dx%d+%d+%d" % (width, height, x, y))
+root.resizable(0, 0)
+
+Top = Frame(root, bd=2,  relief=RIDGE)
+Top.pack(side=TOP, fill=X)
+Form = Frame(root, height=200)
+Form.pack(side=TOP, pady=20)
+
+lbl_title = Label(Top, text = "Library Management", font=('arial', 15))
+lbl_title.pack(fill=X)
+lbl_username = Label(Form, text = "Username:", font=('arial', 14), bd=15)
+lbl_username.grid(row=0, sticky="e")
+lbl_password = Label(Form, text = "Password:", font=('arial', 14), bd=15)
+lbl_password.grid(row=1, sticky="e")
+lbl_text = Label(Form)
+lbl_text.grid(row=2, columnspan=2)
 
 
+username = Entry(Form,font=(14))
+username.grid(row=0, column=1)
+password = Entry(Form, show="*", font=(14))
+password.grid(row=1, column=1)
+
+def Login():
+    pas_sword=password.get()
+    pas_sword=str(pas_sword)
+    if username.get() =="" or pas_sword == "":
+        lbl_text.config(text="Please complete the required field!" , fg="red")
+    if username.get() in ['rohan','karteek','sujay'] and pas_sword =='123':
+        HomeWindow()
+    else:
+        lbl_text.config(text="Invalid username or password", fg="red")
+
+btn_login = Button(Form, text="Login", width=45, command=Login)
+btn_login.grid(pady=25, row=3, columnspan=2)
+btn_login.bind('<Return>', Login)
+
+def HomeWindow():
+   root=Tk()
+   root.title('Library Management System')
+   root.iconbitmap("C:\\Users\\PRASAD\\Downloads\\library.ico")
+   root.geometry('500x200')
 #2(ADDING TEXT IN WINDOW)
-txt1=Label(root,text='Enter Author Name :',font=50)
-txt2=Label(root,text='Enter Book Name :',font=50)
-txt1.grid(row=0,column=0)
-txt2.grid(row=1,column=0)
+   txt1=Label(root,text='Enter Author Name :',font=50)
+   txt2=Label(root,text='Enter Book Name :',font=50)
+   txt1.grid(row=0,column=0)
+   txt2.grid(row=1,column=0)
 
 #3(ADDING INPUT BOX)
-enter1=Entry(root,fg='red',width=20)#AUTHOR NAME
-enter1.grid(row=0,column=1)#BOOK NAME
-enter2=Entry(root,fg='red',width=20)
-enter2.grid(row=1,column=1)
+   enter1=Entry(root,fg='red',width=20)#AUTHOR NAME
+   enter1.grid(row=0,column=1)#BOOK NAME
+   enter2=Entry(root,fg='red',width=20)
+   enter2.grid(row=1,column=1)
 
 #4(ADDING BUTTONS)
-update_button=Button(root,text='UPDATE',height=2,width=10)
-check_button=Button(root,text='CHECK',height=2,width=10)
-borrow_button=Button(root,text='BORROW',height=2,width=10)
-return_button=Button(root,text='RETURN',height=2,width=10)
+   update_button=Button(root,text='UPDATE',height=2,width=10)
+   check_button=Button(root,text='CHECK',height=2,width=10)
+   borrow_button=Button(root,text='BORROW',height=2,width=10)
+   return_button=Button(root,text='RETURN',height=2,width=10)
 
 #5(PLACEMENT OF BUTTONS)
-update_button.grid(row=2,column=0)
-check_button.grid(row=2,column=1)
-borrow_button.grid(row=3,column=0)
-return_button.grid(row=3,column=1)
+   update_button.grid(row=2,column=0)
+   check_button.grid(row=2,column=1)
+   borrow_button.grid(row=3,column=0)
+   return_button.grid(row=3,column=1)
 
 #7(MESSAGE BOX)
-def update_message():
-   messagebox.showinfo("Update", "Sucessfully Added")
-def borrow_message():
-   messagebox.showinfo("Update", "Sucessfully Borrowed")
-def return_message():
-   messagebox.showinfo("Update", "Sucessfully Returned")
-   
-   
+   def update_message():
+      messagebox.showinfo("Update", "Sucessfully Added")
+   def borrow_message():
+      messagebox.showinfo("Borrow", "Sucessfully Borrowed")
+   def return_message():
+      messagebox.showinfo("Return", "Sucessfully Returned")
+
+
 #6(ADDING COMMANDS)
-def update():
-    name=enter1.get()
-    book=enter2.get()
-    name=name.lower()
-    book=book.lower()
-    import mysql.connector
-    mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
-    cur=mydb.cursor()
-    query='INSERT INTO books(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
-    b1=(name,book)
-    cur.execute(query,b1)
-    mydb.commit()
-    update_message()
+   def update():
+       name=enter1.get()
+       book=enter2.get()
+       name=name.lower()
+       book=book.lower()
+       import mysql.connector
+       mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
+       cur=mydb.cursor()
+       query='INSERT INTO books(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
+       b1=(name,book)
+       cur.execute(query,b1)
+       mydb.commit()
+       update_message()
 
-update_button=Button(root,text='UPDATE',height=2,width=10,command=update)
-update_button.grid(row=2,column=0)
-
-
-def check():
-   name=enter1.get()
-   book=enter2.get()
-   name=name.lower()
-   book=book.lower()
-   import mysql.connector
-   mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
-   cur=mydb.cursor()
-   query="select * from books where  BOOKNAME=(%s)"
-   b2=(name,)
-   cur.execute(query,b2)
-   result=cur.fetchone()
-   if result[0]==name and result[1]==book:
-      show=messagebox.showinfo("showinfo", "Book Available")
-   else:
-      show_other=messagebox.showinfo("showinfo", "Book not found") 
-   print('Author name :',result[0])#just verifying(can be removed if you want to)
-   print(' Book name   :',result[1])#same goes for this
-check_button=Button(root,text='CHECK',height=2,width=10,command=check)
-check_button.grid(row=2,column=1)
-
-def borrow():
-   name=enter1.get()
-   book=enter2.get()
-   name=name.lower()
-   book=book.lower()
-   import mysql.connector
-   mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
-   cur=mydb.cursor()
-   query2='INSERT INTO borrowed(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
-   b2=(name,book)
-   cur.execute(query2,b2)
-   mydb.commit()
-   query3='DELETE FROM books WHERE BOOKNAME=(%s)'
-   b3=(name,)
-   cur.execute(query3,b3)
-   mydb.commit()
-   borrow_message()
-borrow_button=Button(root,text='BORROW',height=2,width=10,command=borrow)
-borrow_button.grid(row=3,column=0)
+   update_button=Button(root,text='UPDATE',height=2,width=10,command=update)
+   update_button.grid(row=2,column=0)
 
 
-def Return():
-   name=enter1.get()
-   book=enter2.get()
-   name=name.lower()
-   book=book.lower()
-   import mysql.connector
-   mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
-   cur=mydb.cursor()
-   query2='INSERT INTO books(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
-   b2=(name,book)
-   cur.execute(query2,b2)
-   mydb.commit()
-   query3='DELETE FROM borrowed WHERE BOOKNAME=(%s)'
-   b3=(name,)
-   cur.execute(query3,b3)
-   mydb.commit()
-   return_message()
-return_button=Button(root,text='RETURN',height=2,width=10,command=Return)
-return_button.grid(row=3,column=1)
+   def check():
+      name=enter1.get()
+      book=enter2.get()
+      name=name.lower()
+      book=book.lower()
+      import mysql.connector
+      mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
+      cur=mydb.cursor()
+      query="select * from books where  BOOKNAME=(%s)"
+      b2=(name,)
+      cur.execute(query,b2)
+      result=cur.fetchone()
+      if result[0]==name and result[1]==book:
+         show=messagebox.showinfo("showinfo", "Book Available")
+      else:
+         show_other=messagebox.showinfo("showinfo", "Book not found")
+      print('Author name :',result[0])#just verifying(can be removed if you want to)
+      print(' Book name   :',result[1])#same goes for this
+   check_button=Button(root,text='CHECK',height=2,width=10,command=check)
+   check_button.grid(row=2,column=1)
 
+   def borrow():
+      name=enter1.get()
+      book=enter2.get()
+      name=name.lower()
+      book=book.lower()
+      import mysql.connector
+      mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
+      cur=mydb.cursor()
+      query2='INSERT INTO borrowed(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
+      b2=(name,book)
+      cur.execute(query2,b2)
+      mydb.commit()
+      query3='DELETE FROM books WHERE BOOKNAME=(%s)'
+      b3=(name,)
+      cur.execute(query3,b3)
+      mydb.commit()
+      borrow_message()
+   borrow_button=Button(root,text='BORROW',height=2,width=10,command=borrow)
+   borrow_button.grid(row=3,column=0)
+
+
+   def Return():
+      name=enter1.get()
+      book=enter2.get()
+      name=name.lower()
+      book=book.lower()
+      import mysql.connector
+      mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
+      cur=mydb.cursor()
+      query2='INSERT INTO books(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
+      b2=(name,book)
+      cur.execute(query2,b2)
+      mydb.commit()
+      query3='DELETE FROM borrowed WHERE BOOKNAME=(%s)'
+      b3=(name,)
+      cur.execute(query3,b3)
+      mydb.commit()
+      return_message()
+   return_button=Button(root,text='RETURN',height=2,width=10,command=Return)
+   return_button.grid(row=3,column=1)
 
 root.mainloop()
-
-
-
-
-    
-
