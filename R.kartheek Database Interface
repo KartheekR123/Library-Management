@@ -38,7 +38,8 @@ def Login():
     pas_sword=str(pas_sword)
     if username.get() =="" or pas_sword == "":
         lbl_text.config(text="Please complete the required field!" , fg="red")
-    if username.get() in ['rohan','karteek','sujay'] and pas_sword =='123':
+    elif username.get() in ['rohan','karteek','sujay'] and pas_sword =='123':
+        root.destroy()
         HomeWindow()
     else:
         lbl_text.config(text="Invalid username or password", fg="red")
@@ -51,7 +52,14 @@ def HomeWindow():
    root=Tk()
    root.title('Library Management System')
    root.iconbitmap("C:\\Users\\PRASAD\\Downloads\\library.ico")
-   root.geometry('500x200')
+   root.geometry('580x380')
+   screen_width = root.winfo_screenwidth()
+   screen_height = root.winfo_screenheight()
+   x = (screen_width/2) - (width/2)
+   y = (screen_height/2) - (height/2)
+   root.geometry("%dx%d+%d+%d" % (width, height, x, y))
+   root.resizable(0, 0)
+
 #2(ADDING TEXT IN WINDOW)
    txt1=Label(root,text='Enter Author Name :',font=50)
    txt2=Label(root,text='Enter Book Name :',font=50)
