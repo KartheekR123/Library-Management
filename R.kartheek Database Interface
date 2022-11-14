@@ -91,6 +91,8 @@ def HomeWindow():
       messagebox.showinfo("Borrow", "Sucessfully Borrowed")
    def return_message():
       messagebox.showinfo("Return", "Sucessfully Returned")
+   def incomplete():
+       messagebox.showinfo("check", "Please complete the required field!")
 
 
 #6(ADDING COMMANDS)
@@ -98,38 +100,64 @@ def HomeWindow():
        name=enter1.get()
        book=enter2.get()
        name=name.lower()
+       name=str(name)
+       book=str(book)
        book=book.lower()
+       count=0
        import mysql.connector
        mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
        cur=mydb.cursor()
-       query='INSERT INTO books(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
-       b1=(name,book)
-       cur.execute(query,b1)
-       mydb.commit()
-       update_message()
-
+       if name=="" or book=="":
+           incomplete()
+       elif name!="" or book!="":
+           search=(name,book)
+           cur=mydb.cursor()
+           query="select * from books"
+           result=cur.execute(query)
+           result=cur.fetchall()
+           for i in result:
+               if i==search:
+                   count=count+1
+           if count >=1:
+               show=messagebox.showinfo("showinfo", "Book Already exists")
+           else:
+               query='INSERT INTO books(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
+               b1=(name,book)
+               cur.execute(query,b1)
+               mydb.commit()
+               update_message()
    update_button=Button(root,text='UPDATE',height=2,width=10,command=update)
    update_button.grid(row=2,column=0)
 
 
    def check():
       name=enter1.get()
-      book=enter2.get()
+      name=str(name)
       name=name.lower()
+      book=enter2.get()
+      book=str(book)
       book=book.lower()
+      a=0
+      an=0
       import mysql.connector
       mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
-      cur=mydb.cursor()
-      query="select * from books where  BOOKNAME=(%s)"
-      b2=(name,)
-      cur.execute(query,b2)
-      result=cur.fetchone()
-      if result[0]==name and result[1]==book:
-         show=messagebox.showinfo("showinfo", "Book Available")
-      else:
-         show_other=messagebox.showinfo("showinfo", "Book not found")
-      print('Author name :',result[0])#just verifying(can be removed if you want to)
-      print(' Book name   :',result[1])#same goes for this
+      if name=="" or book=="":
+          incomplete()
+      elif name!="" or book!="":
+         search=(name,book)
+         cur=mydb.cursor()
+         query="select * from books"
+         result=cur.execute(query)
+         result=cur.fetchall()
+         for i in result:
+             if i==search:
+                 a=a+1  
+             else:
+                 an=an+1
+         if a>=1:
+             show=messagebox.showinfo("showinfo", "Book Available")
+         elif a==0:
+             show=messagebox.showinfo("showinfo", "Book Unvailable") 
    check_button=Button(root,text='CHECK',height=2,width=10,command=check)
    check_button.grid(row=2,column=1)
 
@@ -137,19 +165,24 @@ def HomeWindow():
       name=enter1.get()
       book=enter2.get()
       name=name.lower()
+      name=str(name)
+      book=str(book)
       book=book.lower()
       import mysql.connector
       mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
       cur=mydb.cursor()
-      query2='INSERT INTO borrowed(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
-      b2=(name,book)
-      cur.execute(query2,b2)
-      mydb.commit()
-      query3='DELETE FROM books WHERE BOOKNAME=(%s)'
-      b3=(name,)
-      cur.execute(query3,b3)
-      mydb.commit()
-      borrow_message()
+      if name=="" or book=="":
+          incomplete()
+      elif name!="" or book!="":
+         query2='INSERT INTO borrowed(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
+         b2=(name,book)
+         cur.execute(query2,b2)
+         mydb.commit()
+         query3='DELETE FROM books WHERE BOOKNAME=(%s)'
+         b3=(name,)
+         cur.execute(query3,b3)
+         mydb.commit()
+         borrow_message()
    borrow_button=Button(root,text='BORROW',height=2,width=10,command=borrow)
    borrow_button.grid(row=3,column=0)
 
@@ -162,15 +195,18 @@ def HomeWindow():
       import mysql.connector
       mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
       cur=mydb.cursor()
-      query2='INSERT INTO books(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
-      b2=(name,book)
-      cur.execute(query2,b2)
-      mydb.commit()
-      query3='DELETE FROM borrowed WHERE BOOKNAME=(%s)'
-      b3=(name,)
-      cur.execute(query3,b3)
-      mydb.commit()
-      return_message()
+      if name=="" or book=="":
+          incomplete()
+      elif name!="" or book!="":
+         query2='INSERT INTO books(BOOKNAME,AUTHORNAME) VALUES(%s, %s)'
+         b2=(name,book)
+         cur.execute(query2,b2)
+         mydb.commit()
+         query3='DELETE FROM borrowed WHERE BOOKNAME=(%s)'
+         b3=(name,)
+         cur.execute(query3,b3)
+         mydb.commit()
+         return_message()
    return_button=Button(root,text='RETURN',height=2,width=10,command=Return)
    return_button.grid(row=3,column=1)
 
