@@ -38,7 +38,7 @@ def Login():
     pas_sword=str(pas_sword)
     if username.get() =="" or pas_sword == "":
         lbl_text.config(text="Please complete the required field!" , fg="red")
-    elif username.get() in ['rohan','karteek','sujay'] and pas_sword =='123':
+    elif username.get() in ['rohan','karteek','sujay',] and pas_sword =='123':
         root.destroy()
         HomeWindow()
     else:
@@ -240,5 +240,39 @@ def HomeWindow():
        enter2.delete(0,END)
    clear_button=Button(root, text="CLEAR",height=2,width=10,command=clear)
    clear_button.grid(row=4,column=1)
+
+   
+   def Library():
+       import mysql.connector
+       win=Tk()
+       win.title('Library')
+       width = 400
+       height = 400
+       screen_width = win.winfo_screenwidth()
+       screen_height = win.winfo_screenheight()
+       x = (screen_width/2) - (width/2)
+       y = (screen_height/2) - (height/2)
+       win.geometry("%dx%d+%d+%d" % (width, height, x, y))
+       win.resizable(0, 0)
+       title_1=Label(win,text='Book name',font=('arial', 14), bd=15)
+       title_2=Label(win,text='Author name',font=('arial', 14), bd=15)
+       title_1.grid(row=0,column=1)
+       title_2.grid(row=0,column=3)
+       mydb=mysql.connector.connect(host='localhost',user='root',password='123456',database='project')
+       cur=mydb.cursor()
+       query="select * from books"
+       cur.execute(query)
+       records=cur.fetchall()
+       count=1
+       for i in range(0,len(records)):
+           book=Label(win,text=records[i][0],font=('arial', 14), bd=15)
+           book.grid(row=count,column=1)
+           author=Label(win,text=records[i][1],font=('arial', 14), bd=15)
+           author.grid(row=count,column=3)
+           count=count+1
+       win.mainloop()
+   refresh_button=Button(root, text="Library",height=2,width=10,command=Library)
+   refresh_button.grid(row=5,column=1)
+
 
 root.mainloop()
