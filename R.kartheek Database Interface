@@ -77,7 +77,7 @@ def HomeWindow():
    check_button=Button(root,text='CHECK',height=2,width=10)
    borrow_button=Button(root,text='BORROW',height=2,width=10)
    return_button=Button(root,text='RETURN',height=2,width=10)
-
+   
 #5(PLACEMENT OF BUTTONS)
    update_button.grid(row=2,column=0)
    check_button.grid(row=2,column=1)
@@ -196,7 +196,6 @@ def HomeWindow():
    borrow_button=Button(root,text='BORROW',height=2,width=10,command=borrow)
    borrow_button.grid(row=3,column=0)
 
-
    def Return():
       name=enter1.get()
       book=enter2.get()
@@ -230,5 +229,16 @@ def HomeWindow():
             return_message()
    return_button=Button(root,text='RETURN',height=2,width=10,command=Return)
    return_button.grid(row=3,column=1)
+
+   def ex_it():
+        root.destroy()
+   exit_button=Button(root, text="EXIT",height=2,width=10,command=ex_it)
+   exit_button.grid(row=4,column=0)
+
+   def clear():
+       enter1.delete(0, END)
+       enter2.delete(0,END)
+   clear_button=Button(root, text="CLEAR",height=2,width=10,command=clear)
+   clear_button.grid(row=4,column=1)
 
 root.mainloop()
